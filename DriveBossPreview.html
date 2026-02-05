@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveBoss Dashboard Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'SF Pro Display', Arial, sans-serif;
+      background: #fff;
+      color: #222;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 24px 16px 80px 16px;
+      background: #f5f5f7;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2.2em;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+    .card {
+      background: linear-gradient(120deg, #f5f5f7 80%, #eaf6ff 100%);
+      border-radius: 12px;
+      box-shadow: 0 1px 8px 0 rgba(0,180,255,0.04), 0 0.5px 0 #d1d1d6;
+      border: 0.5px solid #d1d1d6;
+      padding: 20px 18px;
+      margin-bottom: 20px;
+      transition: box-shadow 0.2s, border 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-title {
+      /* Add a subtle colored underline */
+      position: relative;
+      display: inline-block;
+    }
+    .card-title[data-color="yellow"]::after {
+      content: "";
+      display: block;
+      height: 3px;
+      width: 36px;
+      background: linear-gradient(90deg, #ffe066 60%, #fffbe6 100%);
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .card-title[data-color="green"]::after {
+      content: "";
+      display: block;
+      height: 3px;
+      width: 36px;
+      background: linear-gradient(90deg, #7fffd4 60%, #eafff2 100%);
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .card-title[data-color="blue"]::after {
+      content: "";
+      display: block;
+      height: 3px;
+      width: 36px;
+      background: linear-gradient(90deg, #7ecbff 60%, #eaf6ff 100%);
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .card:hover {
+      box-shadow: 0 4px 24px 0 rgba(0,180,255,0.10), 0 1px 0 #d1d1d6;
+      border: 1.5px solid #7ecbff;
+    }
+    .card-title {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .card-body {
+      font-size: 1em;
+      color: #555;
+    }
+    .row {
+      display: flex;
+      gap: 16px;
+    }
+    .row .card {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    .tabbar {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      height: 64px;
+      background: linear-gradient(90deg, #fffbe6 0%, #eafff2 50%, #eaf6ff 100%);
+      border-top: 0.5px solid #d1d1d6;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10;
+      box-shadow: 0 -2px 8px rgba(0,180,255,0.04);
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      color: #888;
+      font-size: 0.95em;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 6px 0;
+    }
+    .tab.active {
+      color: #FA243C;
+      font-weight: 600;
+      text-shadow: 0 2px 8px #ffe06644, 0 1px 0 #7fffd444, 0 0.5px 0 #7ecbff44;
+    }
+    .tab svg {
+      display: block;
+      margin: 0 auto 2px auto;
+      height: 22px;
+      width: 22px;
+      stroke-width: 1.5;
+    }
+    @media (max-width: 500px) {
+      .container { padding-bottom: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="assets/generated-image (42).png" alt="DriveBoss Logo" style="display:block;margin:0 auto 24px auto;max-width:120px;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);background:#fff;" />
+    <h1>DriveBoss</h1>
+    <div id="dashboard">
+      <div class="card">
+        <div class="card-title" data-color="yellow">Earnings</div>
+        <div class="card-body">This week: $120</div>
+      </div>
+      <div class="row">
+        <div class="card">
+          <div class="card-title" data-color="blue">Mileage</div>
+          <div class="card-body">72 miles</div>
+        </div>
+        <div class="card">
+          <div class="card-title" data-color="green">Car Health</div>
+          <div class="card-body">Good</div>
+        </div>
+      </div>
+    </div>
+    <div id="earnings" style="display:none">
+      <div class="card" style="background:linear-gradient(120deg,#fffbe6 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="yellow">Earnings</div>
+        <div class="card-body">
+          <button class="onboarding-btn" style="background:#7ecbff;color:#fff;margin-bottom:12px;" onclick="showAddEarning()">+ Add Earning</button>
+          <ul id="earnings-list" style="list-style:none;padding:0;margin:0;">
+            <!-- Earnings will be injected here -->
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#eafff2 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="green">Earnings Chart</div>
+        <div class="card-body">
+          <div id="earnings-chart" style="height:80px;display:flex;align-items:end;gap:8px;">
+            <!-- Simple bar chart -->
+          </div>
+          <div style="font-size:0.9em;color:#888;margin-top:8px;">(Chart: Weekly earnings)</div>
+        </div>
+      </div>
+      <!-- Add Earning Modal -->
+      <div id="add-earning-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.18);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:14px;box-shadow:0 4px 32px #7ecbff33;padding:32px 24px;max-width:320px;margin:auto;">
+          <h2 style="margin-top:0;font-size:1.3em;">Add Earning</h2>
+          <input id="earning-amount" type="number" placeholder="Amount ($)" style="width:100%;padding:10px 8px;margin-bottom:12px;border-radius:6px;border:1px solid #d1d1d6;font-size:1em;" />
+          <input id="earning-notes" type="text" placeholder="Notes (optional)" style="width:100%;padding:10px 8px;margin-bottom:12px;border-radius:6px;border:1px solid #d1d1d6;font-size:1em;" />
+          <button class="onboarding-btn" style="background:#7fffd4;color:#222;width:100%;margin-bottom:8px;" onclick="addEarning()">Add</button>
+          <button class="onboarding-btn" style="background:#ffe066;color:#222;width:100%;" onclick="hideAddEarning()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div id="mileage" style="display:none">
+      <div class="card" style="background:linear-gradient(120deg,#eafff2 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="blue">Mileage</div>
+        <div class="card-body">
+          <button class="onboarding-btn" style="background:#ffe066;color:#222;margin-bottom:12px;" onclick="showAddMileage()">+ Add Mileage</button>
+          <ul id="mileage-list" style="list-style:none;padding:0;margin:0;"></ul>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#fffbe6 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="yellow">Mileage Chart</div>
+        <div class="card-body">
+          <div id="mileage-chart" style="height:80px;display:flex;align-items:end;gap:8px;"></div>
+          <div style="font-size:0.9em;color:#888;margin-top:8px;">(Chart: Daily mileage)</div>
+        </div>
+      </div>
+      <!-- Add Mileage Modal -->
+      <div id="add-mileage-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.18);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:14px;box-shadow:0 4px 32px #ffe06633;padding:32px 24px;max-width:320px;margin:auto;">
+          <h2 style="margin-top:0;font-size:1.3em;">Add Mileage</h2>
+          <input id="mileage-amount" type="number" placeholder="Miles" style="width:100%;padding:10px 8px;margin-bottom:12px;border-radius:6px;border:1px solid #d1d1d6;font-size:1em;" />
+          <input id="mileage-notes" type="text" placeholder="Notes (optional)" style="width:100%;padding:10px 8px;margin-bottom:12px;border-radius:6px;border:1px solid #d1d1d6;font-size:1em;" />
+          <button class="onboarding-btn" style="background:#7ecbff;color:#fff;width:100%;margin-bottom:8px;" onclick="addMileage()">Add</button>
+          <button class="onboarding-btn" style="background:#ffe066;color:#222;width:100%;" onclick="hideAddMileage()">Cancel</button>
+        </div>
+      </div>
+          document.getElementById('add-mileage-modal').style.display = 'none';
+          document.getElementById('mileage-amount').value = '';
+          document.getElementById('mileage-notes').value = '';
+        }
+        function addMileage() {
+          const miles = parseFloat(document.getElementById('mileage-amount').value);
+          const notes = document.getElementById('mileage-notes').value;
+          if(!isNaN(miles) && miles > 0) {
+            const today = new Date();
+            const date = today.toISOString().slice(0,10);
+            mileage.push({ miles, notes, date });
+            hideAddMileage();
+            renderMileage();
+          }
+        }
+        // Simple bar chart for daily mileage
+        function renderMileageChart() {
+          const chart = document.getElementById('mileage-chart');
+          chart.innerHTML = '';
+          // Group by last 7 days
+          const days = Array.from({length:7}, (_,i)=>{
+            const d = new Date();
+            d.setDate(d.getDate()-6+i);
+            return d.toISOString().slice(5,10);
+          });
+          const dayTotals = days.map(d=>{
+            const total = mileage.filter(m=>m.date.slice(5,10)===d).reduce((sum,m)=>sum+m.miles,0);
+            return total;
+          });
+          const max = Math.max(...dayTotals, 40);
+          dayTotals.forEach((amt,i)=>{
+            const bar = document.createElement('div');
+            bar.style = `flex:1;height:${Math.round(amt/max*60+8)}px;background:linear-gradient(180deg,#7ecbff,#ffe066,#7fffd4);border-radius:4px 4px 0 0;transition:height 0.3s;display:flex;align-items:flex-end;justify-content:center;position:relative;`;
+            bar.title = `${amt} mi`;
+            if(amt>0) bar.innerHTML = `<span style='position:absolute;top:-18px;font-size:0.85em;color:#222;'>${amt}</span>`;
+            chart.appendChild(bar);
+          });
+        }
+    </div>
+    <div id="gasfinder" style="display:none">
+      <div class="card" style="background:linear-gradient(120deg,#eaf6ff 80%,#fffbe6 100%);">
+        <div class="card-title" data-color="blue">Gas Finder</div>
+        <div class="card-body">
+          <input id="gas-location" type="text" placeholder="Enter location or use GPS" style="width:100%;padding:10px 8px;margin-bottom:12px;border-radius:6px;border:1px solid #d1d1d6;font-size:1em;" />
+          <button class="onboarding-btn" style="background:#7fffd4;color:#222;width:100%;margin-bottom:12px;" onclick="findGas()">Find Gas</button>
+          <ul id="gas-list" style="list-style:none;padding:0;margin:0;"></ul>
+          <div id="gas-map" style="height:180px;width:100%;background:#eaf6ff;border-radius:10px;margin-top:16px;display:flex;align-items:center;justify-content:center;color:#7ecbff;font-size:1.2em;">Map Preview</div>
+        </div>
+      </div>
+    </div>
+    <div id="carhealth" style="display:none">
+      <div class="card" style="background:linear-gradient(120deg,#eafff2 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="green">Car Health</div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:12px;">
+            <div style="width:64px;height:64px;border-radius:50%;border:6px solid #7fffd4;display:flex;align-items:center;justify-content:center;font-size:2em;font-weight:700;color:#222;background:#fff;">92</div>
+            <div>
+              <div style="font-size:1.1em;font-weight:600;color:#7fffd4;">Excellent</div>
+              <div style="font-size:0.98em;color:#888;">Keep up with maintenance for best performance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#fffbe6 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="yellow">Maintenance Reminders</div>
+        <div class="card-body">
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li><span style="color:#ffe066;font-size:1.2em;margin-right:8px;">&#128276;</span>Oil Change due in 2 weeks</li>
+            <li><span style="color:#ffe066;font-size:1.2em;margin-right:8px;">&#128276;</span>Tire Rotation in 1 month</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#eaf6ff 80%,#eafff2 100%);">
+        <div class="card-title" data-color="green">Maintenance Log</div>
+        <div class="card-body">
+          <ul id="maintenance-log" style="list-style:none;padding:0;margin:0;">
+            <!-- Maintenance logs will be injected here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="settings" style="display:none">
+      <div class="card" style="background:linear-gradient(120deg,#eaf6ff 80%,#fffbe6 100%);">
+        <div class="card-title" data-color="blue">Profile</div>
+        <div class="card-body" style="display:flex;align-items:center;gap:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#7ecbff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.7em;">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div>
+            <div style="font-weight:600;">Alex Driver</div>
+            <div style="color:#888;font-size:0.98em;">alex@email.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#eafff2 80%,#fffbe6 100%);">
+        <div class="card-title" data-color="green">Car Info</div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="22" height="22" fill="none" stroke="#7fffd4" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="6" rx="3"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            2022 Toyota Camry
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <svg width="22" height="22" fill="none" stroke="#ffe066" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            License: 123-XYZ
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#fffbe6 80%,#eaf6ff 100%);">
+        <div class="card-title" data-color="yellow">Notifications</div>
+        <div class="card-body">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="notif-toggle" checked style="accent-color:#7ecbff;width:18px;height:18px;" />
+            <span>Enable Notifications</span>
+          </label>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(120deg,#eaf6ff 80%,#eafff2 100%);">
+        <div class="card-title" data-color="green">Privacy</div>
+        <div class="card-body">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="privacy-toggle" style="accent-color:#ffe066;width:18px;height:18px;" />
+            <span>Privacy Mode</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="tabbar">
+      <div class="tab active" data-tab="dashboard">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M9 21V9h6v12"/></svg>
+        Dashboard
+      </div>
+      <div class="tab" data-tab="earnings">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Earnings
+      </div>
+      <div class="tab" data-tab="mileage">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="6" rx="3"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Mileage
+      </div>
+      <div class="tab" data-tab="gasfinder">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 20v-7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v7"/><circle cx="12" cy="7" r="4"/></svg>
+        Gas Finder
+      </div>
+      <div class="tab" data-tab="carhealth">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+        Car Health
+      </div>
+      <div class="tab" data-tab="settings">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </div>
+    <script>
+    // Car Health logic
+    let maintenanceLogs = [
+      { title: "Oil Change", date: "2025-12-10", notes: "Synthetic oil" },
+      { title: "Tire Rotation", date: "2025-11-01", notes: "" }
+    ];
+    function renderMaintenanceLog() {
+      const list = document.getElementById('maintenance-log');
+      if (!list) return;
+      list.innerHTML = '';
+      if (maintenanceLogs.length === 0) {
+        list.innerHTML = '<li style="color:#888;">No maintenance records.</li>';
+      } else {
+        maintenanceLogs.slice().reverse().forEach(log => {
+          const li = document.createElement('li');
+          li.style = 'margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #eaf6ff;';
+          li.innerHTML = `<span style='font-weight:600;color:#222;'>${log.title}</span> <span style='color:#888;font-size:0.95em;'>${log.notes||''}</span> <span style='float:right;color:#888;font-size:0.92em;'>${log.date}</span>`;
+          list.appendChild(li);
+        });
+      }
+    }
+    // Mileage logic
+    let mileage = [
+      { miles: 32, notes: 'Auto', date: '2026-02-01' },
+      { miles: 18, notes: 'Manual', date: '2026-02-03' },
+      { miles: 22, notes: 'Auto', date: '2026-02-04' }
+    ];
+    function renderMileage() {
+      const list = document.getElementById('mileage-list');
+      list.innerHTML = '';
+      if(mileage.length === 0) {
+        list.innerHTML = '<li style="color:#888;">No trips recorded.</li>';
+      } else {
+        mileage.slice().reverse().forEach((m, i) => {
+          const li = document.createElement('li');
+          li.style = 'margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #eaf6ff;';
+          li.innerHTML = `<span style='font-weight:600;color:#222;'>${m.miles} mi</span> <span style='color:#ffe066;font-size:0.95em;'>${m.notes||''}</span> <span style='float:right;color:#888;font-size:0.92em;'>${m.date}</span>`;
+          list.appendChild(li);
+        });
+      }
+      renderMileageChart();
+    }
+    function showAddMileage() {
+      document.getElementById('add-mileage-modal').style.display = 'flex';
+    }
+    function hideAddMileage() {
+      document.getElementById('add-mileage-modal').style.display = 'none';
+      document.getElementById('mileage-amount').value = '';
+      document.getElementById('mileage-notes').value = '';
+    }
+    function addMileage() {
+      const miles = parseFloat(document.getElementById('mileage-amount').value);
+      const notes = document.getElementById('mileage-notes').value;
+      if(!isNaN(miles) && miles > 0) {
+        const today = new Date();
+        const date = today.toISOString().slice(0,10);
+        mileage.push({ miles, notes, date });
+        hideAddMileage();
+        renderMileage();
+      }
+    }
+    // Simple bar chart for daily mileage
+    function renderMileageChart() {
+      const chart = document.getElementById('mileage-chart');
+      chart.innerHTML = '';
+      // Group by last 7 days
+      const days = Array.from({length:7}, (_,i)=>{
+        const d = new Date();
+        d.setDate(d.getDate()-6+i);
+        return d.toISOString().slice(5,10);
+      });
+      const dayTotals = days.map(d=>{
+        const total = mileage.filter(m=>m.date.slice(5,10)===d).reduce((sum,m)=>sum+m.miles,0);
+        return total;
+      });
+      const max = Math.max(...dayTotals, 40);
+      dayTotals.forEach((amt,i)=>{
+        const bar = document.createElement('div');
+        bar.style = `flex:1;height:${Math.round(amt/max*60+8)}px;background:linear-gradient(180deg,#7ecbff,#ffe066,#7fffd4);border-radius:4px 4px 0 0;transition:height 0.3s;display:flex;align-items:flex-end;justify-content:center;position:relative;`;
+        bar.title = `${amt} mi`;
+        if(amt>0) bar.innerHTML = `<span style='position:absolute;top:-18px;font-size:0.85em;color:#222;'>${amt}</span>`;
+        chart.appendChild(bar);
+      });
+    }
+    const tabs = document.querySelectorAll('.tab');
+    const views = ['dashboard','earnings','mileage','gasfinder','carhealth','settings'];
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        views.forEach(v => document.getElementById(v).style.display = 'none');
+        document.getElementById(tab.dataset.tab).style.display = '';
+        if(tab.dataset.tab === 'earnings') renderEarnings();
+        if(tab.dataset.tab === 'mileage') renderMileage();
+        if(tab.dataset.tab === 'gasfinder') renderGasFinder();
+        if(tab.dataset.tab === 'carhealth') renderMaintenanceLog();
+      });
+    });
+    // Gas Finder logic (placeholder)
+    function renderGasFinder() {
+      document.getElementById('gas-list').innerHTML = '';
+      document.getElementById('gas-map').innerHTML = 'Map Preview';
+    }
+    function findGas() {
+      const list = document.getElementById('gas-list');
+      list.innerHTML = '';
+      // Placeholder: show 3 stations
+      const stations = [
+        { name: 'Shell', price: 3.59, address: '123 Main St', distance: '0.8 mi' },
+        { name: 'Chevron', price: 3.65, address: '456 Oak Ave', distance: '1.2 mi' },
+        { name: 'Costco', price: 3.49, address: '789 Market Rd', distance: '2.0 mi' }
+      ];
+      stations.forEach(s => {
+        const li = document.createElement('li');
+        li.style = 'margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #eaf6ff;';
+        li.innerHTML = `<span style='font-weight:600;color:#222;'>${s.name}</span> <span style='color:#7ecbff;font-size:0.95em;'>$${s.price.toFixed(2)}/gal</span><br><span style='color:#888;font-size:0.95em;'>${s.address} • ${s.distance}</span>`;
+        list.appendChild(li);
+      });
+      document.getElementById('gas-map').innerHTML = 'Map Preview (Google API)';
+    }
+
+    // Earnings logic
+    let earnings = [
+      { amount: 120, notes: 'Uber', date: '2026-02-01' },
+      { amount: 85, notes: 'Lyft', date: '2026-02-03' },
+      { amount: 60, notes: 'DoorDash', date: '2026-02-04' }
+    ];
+    function renderEarnings() {
+      const list = document.getElementById('earnings-list');
+      list.innerHTML = '';
+      if(earnings.length === 0) {
+        list.innerHTML = '<li style="color:#888;">No earnings yet.</li>';
+      } else {
+        earnings.slice().reverse().forEach((e, i) => {
+          const li = document.createElement('li');
+          li.style = 'margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #eaf6ff;';
+          li.innerHTML = `<span style='font-weight:600;color:#222;'>$${e.amount.toFixed(2)}</span> <span style='color:#7ecbff;font-size:0.95em;'>${e.notes||''}</span> <span style='float:right;color:#888;font-size:0.92em;'>${e.date}</span>`;
+          list.appendChild(li);
+        });
+      }
+      renderEarningsChart();
+    }
+    function showAddEarning() {
+      document.getElementById('add-earning-modal').style.display = 'flex';
+    }
+    function hideAddEarning() {
+      document.getElementById('add-earning-modal').style.display = 'none';
+      document.getElementById('earning-amount').value = '';
+      document.getElementById('earning-notes').value = '';
+    }
+    function addEarning() {
+      const amount = parseFloat(document.getElementById('earning-amount').value);
+      const notes = document.getElementById('earning-notes').value;
+      if(!isNaN(amount) && amount > 0) {
+        const today = new Date();
+        const date = today.toISOString().slice(0,10);
+        earnings.push({ amount, notes, date });
+        hideAddEarning();
+        renderEarnings();
+      }
+    }
+    // Simple bar chart for weekly earnings
+    function renderEarningsChart() {
+      const chart = document.getElementById('earnings-chart');
+      chart.innerHTML = '';
+      // Group by last 7 days
+      const days = Array.from({length:7}, (_,i)=>{
+        const d = new Date();
+        d.setDate(d.getDate()-6+i);
+        return d.toISOString().slice(5,10);
+      });
+      const dayTotals = days.map(d=>{
+        const total = earnings.filter(e=>e.date.slice(5,10)===d).reduce((sum,e)=>sum+e.amount,0);
+        return total;
+      });
+      const max = Math.max(...dayTotals, 100);
+      dayTotals.forEach((amt,i)=>{
+        const bar = document.createElement('div');
+        bar.style = `flex:1;height:${Math.round(amt/max*60+8)}px;background:linear-gradient(180deg,#ffe066,#7fffd4,#7ecbff);border-radius:4px 4px 0 0;transition:height 0.3s;display:flex;align-items:flex-end;justify-content:center;position:relative;`;
+        bar.title = `$${amt.toFixed(2)}`;
+        if(amt>0) bar.innerHTML = `<span style='position:absolute;top:-18px;font-size:0.85em;color:#222;'>$${amt.toFixed(0)}</span>`;
+        chart.appendChild(bar);
+      });
+    }
+    // Render on load if earnings tab is default
+    if(document.querySelector('.tab.active').dataset.tab==='earnings') renderEarnings();
+    if(document.querySelector('.tab.active').dataset.tab==='mileage') renderMileage();
+  </script>
+</body>
+</html>

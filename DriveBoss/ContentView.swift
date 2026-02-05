@@ -15,31 +15,17 @@ struct ContentView: View {
             }
 
             NavigationStack {
-                EarningsView()
+                Text("Earnings")
             }
             .tabItem {
                 Label("Earnings", systemImage: "dollarsign.circle")
             }
 
             NavigationStack {
-                MileageView()
+                Text("Mileage")
             }
             .tabItem {
                 Label("Mileage", systemImage: "car")
-            }
-
-            NavigationStack {
-                GasFinderView()
-            }
-            .tabItem {
-                Label("Gas Finder", systemImage: "fuelpump")
-            }
-
-            NavigationStack {
-                CarHealthView()
-            }
-            .tabItem {
-                Label("Car Health", systemImage: "heart.text.square")
             }
 
             NavigationStack {

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveBoss Onboarding Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'SF Pro Display', Arial, sans-serif;
+      background: #fff;
+      color: #222;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 32px 16px 80px 16px;
+      background: #f5f5f7;
+      min-height: 100vh;
+    }
+    .onboarding-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      border: 0.5px solid #d1d1d6;
+      padding: 32px 20px;
+      margin-bottom: 24px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .onboarding-title {
+      font-size: 2em;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    .onboarding-body {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 24px;
+    }
+    .onboarding-btn {
+      background: #FA243C;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(250,36,60,0.08);
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .onboarding-btn:hover {
+      background: #d81b32;
+    }
+    .step-indicator {
+      margin-bottom: 18px;
+      font-size: 0.95em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="assets/generated-image (42).png" alt="DriveBoss Logo" style="display:block;margin:0 auto 24px auto;max-width:120px;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);background:#fff;" />
+    <div id="onboarding">
+      <div class="onboarding-card" id="step0">
+        <div class="step-indicator">Step 1 of 7</div>
+        <div class="onboarding-title">Welcome to DriveBoss</div>
+        <div class="onboarding-body">Your all-in-one dashboard for driving earnings, mileage, gas, and car health.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Get Started</button>
+      </div>
+      <div class="onboarding-card" id="step1" style="display:none">
+        <div class="step-indicator">Step 2 of 7</div>
+        <div class="onboarding-title">Feature Highlights</div>
+        <div class="onboarding-body">Track earnings, mileage, find cheap gas, and monitor your car’s health—all in one place.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Next</button>
+      </div>
+      <div class="onboarding-card" id="step2" style="display:none">
+        <div class="step-indicator">Step 3 of 7</div>
+        <div class="onboarding-title">Create Account</div>
+        <div class="onboarding-body">Sign up to save your data and sync across devices.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Next</button>
+      </div>
+      <div class="onboarding-card" id="step3" style="display:none">
+        <div class="step-indicator">Step 4 of 7</div>
+        <div class="onboarding-title">Add Your Car</div>
+        <div class="onboarding-body">Enter your car details to personalize your dashboard and get accurate health scores.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Next</button>
+      </div>
+      <div class="onboarding-card" id="step4" style="display:none">
+        <div class="step-indicator">Step 5 of 7</div>
+        <div class="onboarding-title">Select Apps</div>
+        <div class="onboarding-body">Choose which driving apps you use (Uber, Lyft, DoorDash, etc.) for tailored insights.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Next</button>
+      </div>
+      <div class="onboarding-card" id="step5" style="display:none">
+        <div class="step-indicator">Step 6 of 7</div>
+        <div class="onboarding-title">Set Your Goals</div>
+        <div class="onboarding-body">Define your weekly or monthly earnings and mileage goals to stay motivated.</div>
+        <button class="onboarding-btn" onclick="nextStep()">Next</button>
+      </div>
+      <div class="onboarding-card" id="step6" style="display:none">
+        <div class="step-indicator">Step 7 of 7</div>
+        <div class="onboarding-title">Enable Tracking</div>
+        <div class="onboarding-body">Allow DriveBoss to track your trips and earnings automatically for the best experience.</div>
+        <button class="onboarding-btn" onclick="finishOnboarding()">Finish</button>
+      </div>
+      <div class="onboarding-card" id="step7" style="display:none">
+        <div class="onboarding-title">Onboarding Complete!</div>
+        <div class="onboarding-body">You’re ready to use DriveBoss. Enjoy your drive!</div>
+        <button class="onboarding-btn" onclick="restartOnboarding()">Restart</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    let step = 0;
+    function nextStep() {
+      document.getElementById('step'+step).style.display = 'none';
+      step++;
+      document.getElementById('step'+step).style.display = '';
+    }
+    function finishOnboarding() {
+      document.getElementById('step'+step).style.display = 'none';
+      step++;
+      document.getElementById('step'+step).style.display = '';
+    }
+    function restartOnboarding() {
+      document.getElementById('step'+step).style.display = 'none';
+      step = 0;
+      document.getElementById('step'+step).style.display = '';
+    }
+  </script>
+</body>
+</html>
